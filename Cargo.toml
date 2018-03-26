@@ -1,0 +1,8 @@
+[package]
+name = "chip8"
+version = "0.1.0"
+authors = ["Jeyko Caicedo <jakeactually@outlook.com>"]
+
+[dependencies]
+piston_window = "0.70.0"
+rand = "0.4"
