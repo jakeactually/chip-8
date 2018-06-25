@@ -1,27 +1,30 @@
 extern crate rand;
 
-use cpu::Cpu;
+use cpu::{Cpu, Hack};
 use cpu::Message;
 use data;
 use hardware::Hardware;
 use piston_window::*;
 use std::fs::File;
 use std::io::Read;
+use std::io::Write;
 use std::string::String;
 
 pub struct Chip8 {
     pub cpu: Cpu,
-    pub hardware: Hardware
+    pub hardware: Hardware,
+    pub log: File
 }
 
 impl Chip8 {
-    pub fn new(path: String) -> Chip8 {
+    pub fn new(path: String, hack: Hack) -> Chip8 {
         let mut chip8 = Chip8 {
-            cpu: Cpu::new(),
+            cpu: Cpu::new(hack),
             hardware: Hardware {
                 gfx: [[0; 64]; 32],
                 keys: [false; 17]
-            }
+            },
+            log: File::create("log.txt").unwrap()
         };
         
         let fontset = data::fontset();
@@ -44,9 +47,9 @@ impl Chip8 {
         chip8
     }
 
-    pub fn cycle(&mut self) -> Message {
+    pub fn step(&mut self) -> Message {
         use cpu::Message::*;
-        match self.cpu.cycle() {                          
+        match self.cpu.step() {                          
             Clear => {
                 self.hardware.clear();
                 NoMessage
@@ -98,16 +101,18 @@ impl Chip8 {
         self.cpu.v[15] = flipped;
     }
     
-    pub fn hardware_key(&mut self, button_args: ButtonArgs, get_key_bits2: u8) {
+    pub fn hardware_key(&mut self, button_args: ButtonArgs, key_vx: u8) {
         if let ButtonArgs { button: Button::Keyboard(key), state, .. } = button_args {
                 match state {
-                ButtonState::Press => self.hardware.press(key),
-                ButtonState::Release => {
-                    self.hardware.release(key);
+                ButtonState::Press => {
+                    self.hardware.press(key);
                     if self.cpu.halted {
-                        self.cpu.v[get_key_bits2 as usize] = data::key_to_number(key) as u8;
+                        self.cpu.v[key_vx as usize] = data::key_to_number(key) as u8;
                         self.cpu.halted = false;
                     }
+                },
+                ButtonState::Release => {
+                    self.hardware.release(key);                    
                 }
             }
         }        
@@ -138,36 +143,17 @@ impl Chip8 {
         }
     }
 
-    pub fn debug(&self) {
+    pub fn debug(&mut self) {
         let byte1 = self.cpu.memory[self.cpu.pc as usize];
         let byte2 = self.cpu.memory[self.cpu.pc as usize + 1];
-        
-        print!("f ");
-        for i in 0..16 {
-            print!("{:02x} ", i);            
-        }
-        print!("\n");
-
-        print!("v ");
-        for i in 0..16 {
-            print!("{:02x} ", self.cpu.v[i]);            
-        }
-        print!("\n");
-
-        print!("k ");
-        for i in 0..16 {
-            print!("{:02x} ", if self.hardware.keys[i] { 1 } else { 0 });            
-        }
-        print!("\n");
-
-        println!(
-            "  o{:04x} p{:04x} k{:04} i{:04x} t{:04x} s{:04x} \n",
+        let v = (0..16).map(|x| format!("{:>2x} ", self.cpu.v[x])).collect::<String>();
+        let _ = write!(
+            &mut self.log,
+            "{}| o {:>4x} p{:>4x} i{:>4x}\n",
+            v,
             (byte1 as u16) << 8 | byte2 as u16,
             self.cpu.pc,
-            self.cpu.stack.len(),
-            self.cpu.i,
-            self.cpu.delay_timer,
-            self.cpu.sound_timer            
+            self.cpu.i
         );
     }
 }
