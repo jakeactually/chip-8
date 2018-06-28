@@ -103,7 +103,7 @@ impl Chip8 {
     
     pub fn hardware_key(&mut self, button_args: ButtonArgs, key_vx: u8) {
         if let ButtonArgs { button: Button::Keyboard(key), state, .. } = button_args {
-                match state {
+            match state {
                 ButtonState::Press => {
                     self.hardware.press(key);
                     if self.cpu.halted {
