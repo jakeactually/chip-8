@@ -45,19 +45,3 @@ pub fn key_to_number(key: Key) -> usize {
         _ => 0x10
     }
 }
-
-pub fn test() -> Vec<u8> {
-    vec![
-        0x00, 0xE0, // clear
-        0x60, 0x00, // v0 = 0
-        0xE0, 0xA1, // if v0 pressed
-        0x61, 0x0A, // v1 = A
-        0xE0, 0x9E, // if v0 !pressed
-        0x61, 0x0B, // v1 = B
-        0x62, 0x05, // v2 = 5
-        0x63, 0x05, // v3 = 5
-        0xF1, 0x29, // v1 letter
-        0xD2, 0x35, // draw xv2 yv3 h5
-        0x12, 0x00  // start
-    ]
-}
