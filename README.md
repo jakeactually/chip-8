@@ -50,4 +50,4 @@ Pong
 
 Airplane
 
-![airplane](https://jakeactually.com/github/chip-8/1.JPG "Airplane")
+![airplane](https://jakeactually.com/github/chip-8/3.JPG "Airplane")
