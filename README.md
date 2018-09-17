@@ -21,7 +21,7 @@ if args.len() < 2 {
 
 with any of the availables in the roms folder.
 
-The roms/roms.json file has info about the game, if it were to have "quirks", they should be provided as booleans in the "run" function.
+The roms/roms.json file has data about each game. If it were to have "quirks", they should be set in the "run" function.
 
 ```json
 {
@@ -36,7 +36,7 @@ The roms/roms.json file has info about the game, if it were to have "quirks", th
 pub fn run(rom: &str, shift_hack: bool, memory_hack: bool)
 ```
 
-Most games though run with false, false.
+Most games run with "false, false" though.
 
 # Screenshots
 
