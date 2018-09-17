@@ -18,7 +18,7 @@ pub struct Chip8 {
 }
 
 impl Chip8 {
-    pub fn new(path: String, hack: Hack) -> Chip8 {
+    pub fn new(path: &str, hack: Hack) -> Chip8 {
         let mut chip8 = Chip8 {
             cpu: Cpu::new(hack),
             hardware: Hardware {

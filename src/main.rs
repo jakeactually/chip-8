@@ -18,7 +18,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     if args.len() < 2 {
-        run::run("dev/rom.ch8".to_string());
+        run::run("roms/Pong (1 player).ch8", true, true);
         return
     }
 

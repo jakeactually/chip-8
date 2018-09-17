@@ -8,7 +8,7 @@ use std::thread;
 use std::time::Duration;
 use std::string::String;
 
-pub fn run(rom: String) {
+pub fn run(rom: &str, shift_hack: bool, memory_hack: bool) {
     let mut window: PistonWindow = WindowSettings::new("", [640, 320])
         .build()
         .unwrap();
@@ -17,11 +17,12 @@ pub fn run(rom: String) {
     
     let (sender, receiver) = channel();
     let (sender2, receiver2) = channel();
-    
-    thread::spawn(move || {
-        let hack = Hack { shift_hack: false, memory_hack: false };
-        let mut chip8 = Chip8::new(rom, hack);
-        let mut key_vx = 0_u8;
+
+    let hack = Hack { shift_hack, memory_hack };
+    let mut chip8 = Chip8::new(rom, hack);
+    let mut key_vx = 0_u8;
+
+    thread::spawn(move || {        
         loop {
             if let Ok(button_args) = receiver2.try_recv() {
                 chip8.hardware_key(button_args, key_vx);
@@ -46,6 +47,7 @@ pub fn run(rom: String) {
     });
 
     let mut gfx_cache: Gfx = [[0; 64]; 32];
+
     while let Some(event) = window.next() {
         if let Some(button_args) = event.button_args() {
             let _ = sender2.send(button_args);
@@ -60,12 +62,12 @@ pub fn run(rom: String) {
 }
 
 fn render(context: &Context, graphics: &mut impl Graphics, gfx2: Gfx) {
-    clear(data::BLACK, graphics);
+    clear(data::BLUE, graphics);
     for y in 0..32 {
         for x in 0..64 {            
             if gfx2[y][x] == 1 {
                 let rect = [x as f64 * 10.0, y as f64 * 10.0, 9.0, 9.0];
-                rectangle(data::WHITE, rect, context.transform, graphics);
+                rectangle(data::GRAY, rect, context.transform, graphics);
             }
         }
     }

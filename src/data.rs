@@ -2,6 +2,8 @@ use piston_window::Key;
 
 pub const WHITE: [f32; 4] = [1.0, 1.0, 1.0, 1.0];
 pub const BLACK: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
+pub const BLUE: [f32; 4] = [0.16, 0.21, 0.58, 1.0];
+pub const GRAY: [f32; 4] = [0.93, 0.94, 0.95, 1.0];
 
 pub fn fontset() -> [u8; 80] {
     [
