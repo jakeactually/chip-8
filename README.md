@@ -14,12 +14,12 @@ cargo run
 
 Blinky
 
-![blinky](1.JPG "Blinky")
+![blinky](1.PNG "Blinky")
 
 Pong
 
-![pong](2.JPG "Pong")
+![pong](2.PNG "Pong")
 
 Airplane
 
-![airplane](3.JPG "Airplane")
+![airplane](3.PNG "Airplane")
