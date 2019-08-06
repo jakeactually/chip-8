@@ -14,12 +14,12 @@ cargo run
 
 Blinky
 
-![blinky](https://jakeactually.com/github/chip-8/1.JPG "Blinky")
+![blinky](1.JPG "Blinky")
 
 Pong
 
-![pong](https://jakeactually.com/github/chip-8/2.JPG "Pong")
+![pong](2.JPG "Pong")
 
 Airplane
 
-![airplane](https://jakeactually.com/github/chip-8/3.JPG "Airplane")
+![airplane](3.JPG "Airplane")
