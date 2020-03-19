@@ -6,7 +6,6 @@ use piston_window::*;
 use std::sync::mpsc::channel;
 use std::thread;
 use std::time::Duration;
-use std::string::String;
 
 pub fn run(rom: &str, shift_hack: bool, memory_hack: bool) {
     let mut window: PistonWindow = WindowSettings::new("", [640, 320])
@@ -55,7 +54,7 @@ pub fn run(rom: &str, shift_hack: bool, memory_hack: bool) {
         if let Ok(gfx) = receiver.try_recv() {
             gfx_cache = gfx;
         }
-        window.draw_2d(&event, |context, graphics| {
+        window.draw_2d(&event, |context, graphics, _| {
             render(&context, graphics, gfx_cache);
         });
     }
